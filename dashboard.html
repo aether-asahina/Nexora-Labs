@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Nexora Labs</title>
+
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="text-slate-100 grid-bg min-h-screen overflow-x-hidden antialiased">
+
+  <!-- ── Glow Blobs ── -->
+  <div class="glow bg-violet-500/10 w-[300px] h-[300px] md:w-[600px] md:h-[600px] top-[-150px] right-[-100px]"></div>
+  <div class="glow bg-cyan-500/10  w-[300px] h-[300px] md:w-[500px]  md:h-[500px]  bottom-[5%]  left-[-100px]"></div>
+
+  <!-- ── Toast ── -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 glass px-6 py-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <span id="toast-msg"></span>
+  </div>
+
+  <!-- ── Header ── -->
+  <header class="fixed w-full top-0 z-50 glass border-b border-white/5 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center gap-6">
+      <a href="index.html" class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
+        <span class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">Nexora</span>
+        <span class="text-cyan-400">Labs</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+        <a href="index.html#features" class="hover:text-white transition-colors">Features</a>
+        <a href="dashboard.html"      class="text-white transition-colors">Dashboard</a>
+        <a href="pricing.html"        class="hover:text-white transition-colors">Pricing</a>
+        <a href="roadmap.html"        class="hover:text-white transition-colors">Roadmap</a>
+        <a href="index.html#metrics"  class="hover:text-white transition-colors">Metrics</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden glass p-2 rounded-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+
+      <button onclick="connectWallet()" class="ml-auto px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-cyan-400 text-slate-950 text-xs sm:text-sm font-semibold hover:bg-cyan-300 transition-all active:scale-95 cursor-pointer">
+        Connect Wallet
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Mobile Menu ── -->
+  <div id="mobileMenu" class="fixed top-20 left-0 w-full bg-[#030712]/95 backdrop-blur-xl border-b border-white/5 z-40 hidden">
+    <div class="flex flex-col p-6 gap-5 text-slate-300">
+      <a href="index.html#features">Features</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="roadmap.html">Roadmap</a>
+    </div>
+  </div>
+
+  <!-- ── Main ── -->
+  <main class="relative z-10 pt-28 pb-20">
+    <section class="px-4 sm:px-6 max-w-7xl mx-auto">
+      <div class="glass reveal rounded-[32px] p-6 sm:p-10">
+        <div class="grid lg:grid-cols-2 gap-10 items-center">
+
+          <!-- Left: Info -->
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-400/20 bg-violet-400/5 text-violet-400 text-xs font-medium tracking-wide mb-6 uppercase">
+              Smart Dashboard
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-bold leading-tight mb-6">
+              Manage Everything <br/>In One Place
+            </h2>
+
+            <p class="text-slate-400 leading-relaxed mb-8 max-w-xl">
+              Monitor assets, staking rewards, AI analytics, and blockchain activity from a unified decentralized dashboard.
+            </p>
+
+            <div class="space-y-4 mb-10">
+              <div class="flex items-center gap-4">
+                <div class="w-3 h-3 rounded-full bg-cyan-400"></div>
+                <p class="text-slate-300">Real-Time Portfolio Analytics</p>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="w-3 h-3 rounded-full bg-violet-400"></div>
+                <p class="text-slate-300">AI Trading Signals</p>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="w-3 h-3 rounded-full bg-cyan-400"></div>
+                <p class="text-slate-300">Cross-Chain Wallet Tracking</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4">
+              <button onclick="connectWallet()" class="px-6 py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold hover:bg-cyan-300 transition-all active:scale-95">
+                Connect Wallet
+              </button>
+              <button class="px-6 py-3 rounded-xl glass hover:bg-white/5 transition-all">
+                Live Preview
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Widget -->
+          <div class="glass rounded-[24px] p-6 sm:p-8 float">
+
+            <div class="flex items-center justify-between mb-8">
+              <div>
+                <p class="text-slate-500 text-sm">Portfolio Balance</p>
+                <h2 class="text-4xl font-bold">$284,947</h2>
+              </div>
+              <div class="px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm border border-emerald-500/20">
+                +18.2%
+              </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="h-36 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-violet-500/10 border border-white/5 p-6 mb-6 relative overflow-hidden">
+              <div class="absolute bottom-0 left-0 w-full h-full flex items-end gap-2 px-6 pb-6">
+                <div class="w-full bg-cyan-400/70   rounded-t-xl h-[35%]"></div>
+                <div class="w-full bg-cyan-400/70   rounded-t-xl h-[55%]"></div>
+                <div class="w-full bg-violet-400/70 rounded-t-xl h-[45%]"></div>
+                <div class="w-full bg-cyan-400/70   rounded-t-xl h-[75%]"></div>
+                <div class="w-full bg-violet-400/70 rounded-t-xl h-[65%]"></div>
+                <div class="w-full bg-cyan-400/70   rounded-t-xl h-[90%]"></div>
+              </div>
+            </div>
+
+            <!-- Transactions -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between glass p-4 rounded-2xl">
+                <div>
+                  <h3 class="font-semibold">ETH Staking</h3>
+                  <p class="text-slate-500 text-sm">2 minutes ago</p>
+                </div>
+                <span class="text-emerald-400 font-bold">+$1,240</span>
+              </div>
+              <div class="flex items-center justify-between glass p-4 rounded-2xl">
+                <div>
+                  <h3 class="font-semibold">AI Yield Farming</h3>
+                  <p class="text-slate-500 text-sm">12 minutes ago</p>
+                </div>
+                <span class="text-cyan-400 font-bold">+18%</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── Cursor Glow ── -->
+  <div id="cursorGlow"></div>
+
+  <!-- ── Footer ── -->
+  <footer class="px-4 sm:px-6 pt-10 pb-16 border-t border-white/5">
+    <div class="max-w-7xl mx-auto">
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-slate-500 text-sm">© 2026 Nexora Labs. All rights reserved.</p>
+        <div class="flex items-center gap-6 text-sm text-slate-500">
+          <a href="index.html" class="hover:text-white transition-all">Home</a>
+          <a href="pricing.html" class="hover:text-white transition-all">Pricing</a>
+          <a href="roadmap.html" class="hover:text-white transition-all">Roadmap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Scripts ── -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.1/dist/ethers.umd.min.js"></script>
+  <script type="module" src="firebase.js"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
+
