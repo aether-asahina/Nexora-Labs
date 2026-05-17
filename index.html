@@ -6,1018 +6,217 @@
   <title>Nexora Labs — AI-Powered DeFi Infrastructure</title>
 
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      font-family: 'Space Grotesk', sans-serif;
-      background-color: #030712;
-    }
-    .glow {
-      position: absolute;
-      pointer-events: none;
-      filter: blur(130px);
-      z-index: 0;
-    }
-    .grid-bg {
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-      background-size: 50px 50px;
-    }
-    .glass {
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    
-    .glass:hover{
-  border-color: rgba(34,211,238,0.25);
-  box-shadow: 0 0 30px rgba(34,211,238,0.08);
-  transform: translateY(-5px);
-  transition: all 0.3s ease;
-}
-
-.gradient-text{
-  background: linear-gradient(
-    to right,
-    #22d3ee,
-    #a855f7,
-    #22d3ee
-  );
-
-  background-size: 200% auto;
-
-  color: transparent;
-  -webkit-background-clip: text;
-
-  animation: gradientMove 4s linear infinite;
-}
-
-@keyframes gradientMove{
-  to{
-    background-position: 200% center;
-  }
-}
-
-.float{
-  animation: float 5s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%,100%{
-    transform: translateY(0px);
-  }
-
-  50%{
-    transform: translateY(-12px);
-  }
-}
-
-#cursorGlow{
-  position: fixed;
-  width: 300px;
-  height: 300px;
-  border-radius: 999px;
-  background: rgba(34,211,238,0.08);
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 0;
-  transform: translate(-50%, -50%);
-}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="text-slate-100 grid-bg min-h-screen overflow-x-hidden antialiased">
-  <!-- Loading Screen -->
-<div id="loader"
-class="fixed inset-0 z-[9999] bg-[#030712] flex items-center justify-center transition-all duration-700">
 
-  <div class="flex flex-col items-center">
-
-    <!-- Logo -->
-    <div class="relative mb-6">
-
-      <div class="w-24 h-24 rounded-3xl border border-cyan-400/20 glass flex items-center justify-center">
-
-        <span class="text-3xl font-black gradient-text">
-          N
-        </span>
-
+  <!-- ── Loading Screen ── -->
+  <div id="loader" class="fixed inset-0 z-[9999] bg-[#030712] flex items-center justify-center transition-all duration-700">
+    <div class="flex flex-col items-center">
+      <div class="relative mb-6">
+        <div class="w-24 h-24 rounded-3xl border border-cyan-400/20 glass flex items-center justify-center">
+          <span class="text-3xl font-black gradient-text">N</span>
+        </div>
+        <div class="absolute inset-0 bg-cyan-400/20 blur-3xl rounded-full"></div>
       </div>
-
-      <!-- Glow -->
-      <div class="absolute inset-0 bg-cyan-400/20 blur-3xl rounded-full"></div>
-
-    </div>
-
-    <!-- Loading Text -->
-    <h2 class="text-2xl font-bold mb-2">
-      Nexora Labs
-    </h2>
-
-    <p class="text-slate-500 text-sm mb-6">
-      Initializing decentralized infrastructure...
-    </p>
-
-    <!-- Progress -->
-    <div class="w-56 h-1 rounded-full bg-white/5 overflow-hidden">
-
-      <div id="loaderBar"
-      class="h-full w-0 bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-300">
+      <h2 class="text-2xl font-bold mb-2">Nexora Labs</h2>
+      <p class="text-slate-500 text-sm mb-6">Initializing decentralized infrastructure...</p>
+      <div class="w-56 h-1 rounded-full bg-white/5 overflow-hidden">
+        <div id="loaderBar" class="h-full w-0 bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-300"></div>
       </div>
-
     </div>
-
   </div>
 
-</div>
-
+  <!-- ── Glow Blobs ── -->
   <div class="glow bg-cyan-500/10 w-[300px] h-[300px] md:w-[600px] md:h-[600px] top-[-150px] left-[-100px]"></div>
   <div class="glow bg-violet-500/10 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bottom-[10%] right-[-100px]"></div>
 
+  <!-- ── Toast ── -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 glass px-6 py-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
     <span id="toast-msg">Berhasil bergabung ke waitlist!</span>
   </div>
 
+  <!-- ── Header ── -->
   <header class="fixed w-full top-0 z-50 glass border-b border-white/5 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-      <a href="#" class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center gap-6">
+      <a href="index.html" class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
         <span class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">Nexora</span>
         <span class="text-cyan-400">Labs</span>
       </a>
 
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+        <a href="#features"          class="hover:text-white transition-colors">Features</a>
+        <a href="dashboard.html"     class="hover:text-white transition-colors">Dashboard</a>
+        <a href="pricing.html"       class="hover:text-white transition-colors">Pricing</a>
+        <a href="roadmap.html"       class="hover:text-white transition-colors">Roadmap</a>
+        <a href="#metrics"           class="hover:text-white transition-colors">Metrics</a>
+      </nav>
 
-  <a href="#features" class="hover:text-white transition-colors">
-    Features
-  </a>
+      <button id="menuBtn" class="md:hidden glass p-2 rounded-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
 
-  <a href="#dashboard" class="hover:text-white transition-colors">
-    Dashboard
-  </a>
-
-  <a href="#pricing" class="hover:text-white transition-colors">
-    Pricing
-  </a>
-
-  <a href="#roadmap" class="hover:text-white transition-colors">
-    Roadmap
-  </a>
-
-  <a href="#metrics" class="hover:text-white transition-colors">
-    Metrics
-  </a>
-
-</nav>
-
-      <button onclick="scrollToWaitlist()" class="px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-cyan-400 text-slate-950 text-xs sm:text-sm font-semibold hover:bg-cyan-300 transition-all active:scale-95 cursor-pointer">
+      <button onclick="scrollToWaitlist()" class="ml-auto px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-cyan-400 text-slate-950 text-xs sm:text-sm font-semibold hover:bg-cyan-300 transition-all active:scale-95 cursor-pointer">
         Join Waitlist
       </button>
     </div>
   </header>
 
-  <main class="relative z-10 pt-32">
-<section class="pb-16 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
+  <!-- ── Mobile Menu ── -->
+  <div id="mobileMenu" class="fixed top-20 left-0 w-full bg-[#030712]/95 backdrop-blur-xl border-b border-white/5 z-40 hidden">
+    <div class="flex flex-col p-6 gap-5 text-slate-300">
+      <a href="#features">Features</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="roadmap.html">Roadmap</a>
+    </div>
+  </div>
 
-  <div class="glass reveal rounded-[32px] p-6 sm:p-10 overflow-hidden">
-      <div class="max-w-4xl">
-        
-        <div class="lg:col-span-7 flex flex-col justify-center">
-          <div class="inline-flex self-start items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 text-[10px] sm:text-xs font-medium tracking-wide mb-6 uppercase">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-            AI-Powered DeFi Infrastructure
+  <!-- ── Main ── -->
+  <main class="relative z-10 pt-24">
+
+    <!-- Hero -->
+    <section class="pb-16 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
+      <div class="glass reveal rounded-[32px] p-6 sm:p-10 overflow-hidden">
+        <div class="max-w-4xl">
+          <div class="lg:col-span-7 flex flex-col justify-center">
+
+            <div class="inline-flex self-start items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 text-[10px] sm:text-xs font-medium tracking-wide mb-6 uppercase">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+              AI-Powered DeFi Infrastructure
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
+              Powering The <br/>Future Of <span class="gradient-text">Web3</span>
+            </h1>
+
+            <p class="text-slate-400 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
+              Build scalable decentralized applications with intelligent automation, real-time analytics, and next-generation blockchain infrastructure.
+            </p>
+
+            <form id="waitlistForm" onsubmit="handleWaitlist(event)" class="flex flex-col sm:flex-row gap-3 max-w-md mb-12">
+              <input
+                type="email"
+                id="emailInput"
+                required
+                placeholder="Masukkan alamat email kamu..."
+                class="flex-1 px-4 py-3.5 rounded-xl glass border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 text-sm transition-all"
+              />
+              <button type="submit" class="px-6 py-3.5 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm hover:bg-cyan-300 transition-all active:scale-95 cursor-pointer whitespace-nowrap">
+                Get Early Access
+              </button>
+            </form>
+
+            <!-- Metrics -->
+            <div id="metrics" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 scroll-mt-28">
+              <div class="glass p-4 sm:p-5 rounded-2xl">
+                <h2 class="text-xl sm:text-2xl font-bold text-white">$<span class="counter" data-target="847">0</span>M+</h2>
+                <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Volume</p>
+              </div>
+              <div class="glass p-4 sm:p-5 rounded-2xl">
+                <h2 class="text-xl sm:text-2xl font-bold text-white"><span class="counter" data-target="124">0</span>K</h2>
+                <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Users</p>
+              </div>
+              <div class="glass p-4 sm:p-5 rounded-2xl">
+                <h2 class="text-xl sm:text-2xl font-bold text-white"><span class="counter" data-target="42">0</span>+</h2>
+                <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Chains</p>
+              </div>
+              <div class="glass p-4 sm:p-5 rounded-2xl">
+                <h2 class="text-xl sm:text-2xl font-bold text-cyan-400"><span class="counter" data-target="99">0</span>.9%</h2>
+                <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Uptime</p>
+              </div>
+            </div>
+
           </div>
-
-          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-            Powering The <br/>Future Of <span class=gradient-text>Web3</span>
-          </h1>
-
-          <p class="text-slate-400 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
-            Build scalable decentralized applications with intelligent automation, real-time analytics, and next-generation blockchain infrastructure.
-          </p>
-
-          <form id="waitlistForm" onsubmit="handleWaitlist(event)" class="flex flex-col sm:flex-row gap-3 max-w-md mb-12">
-            <input 
-              type="email" 
-              id="emailInput"
-              required
-              placeholder="Masukkan alamat email kamu..." 
-              class="flex-1 px-4 py-3.5 rounded-xl glass border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 text-sm transition-all"
-            />
-            <button type="submit" class="px-6 py-3.5 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm hover:bg-cyan-300 transition-all active:scale-95 cursor-pointer whitespace-nowrap">
-              Get Early Access
-            </button>
-          </form>
-
-          <div id="metrics" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 scroll-mt-28">
-            <div class="glass p-4 sm:p-5 rounded-2xl">
-              <h2 class="text-xl sm:text-2xl font-bold text-white">$<span class="counter" data-target="847">0</span>M+</h2>
-              <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Volume</p>
-            </div>
-            <div class="glass p-4 sm:p-5 rounded-2xl">
-              <h2 class="text-xl sm:text-2xl font-bold text-white"><span class="counter" data-target="124">0</span>K</h2>
-              <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Users</p>
-            </div>
-            <div class="glass p-4 sm:p-5 rounded-2xl">
-              <h2 class="text-xl sm:text-2xl font-bold text-white"><span class="counter" data-target="42">0</span>+</h2>
-              <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Chains</p>
-            </div>
-            <div class="glass p-4 sm:p-5 rounded-2xl">
-              <h2 class="text-xl sm:text-2xl font-bold text-cyan-400"><span class="counter" data-target="99">0</span>.9%</h2>
-              <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-wider mt-1">Uptime</p>
-            </div>
-          </div>
-
         </div>
       </div>
-</div>
     </section>
 
+    <!-- Features -->
     <section id="features" class="px-4 sm:px-6 py-16 max-w-7xl mx-auto scroll-mt-28">
-      <div class="glass reveal">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-white mb-2">Built For Modern DeFi</h2>
-        <p class="text-slate-400 text-sm">Infrastruktur mutakhir berskala enterprise.</p>
-      </div>
-      <div class="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
-        <div class="glass p-6 rounded-xl">
-          <h3 class="text-lg font-bold mb-2">Cross-Chain Staking</h3>
-          <p class="text-slate-400 text-sm">Otomatisasi pintar antar rantai blockchain tanpa hambatan.</p>
+      <div class="glass reveal p-8 sm:p-12 rounded-[32px]">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-white mb-2">Built For Modern DeFi</h2>
+          <p class="text-slate-400 text-sm">Infrastruktur mutakhir berskala enterprise.</p>
         </div>
-        <div class="glass p-6 rounded-xl">
-          <h3 class="text-lg font-bold mb-2">AI Trading Engine</h3>
-          <p class="text-slate-400 text-sm">Analisis prediktif real-time untuk efisiensi eksekusi maksimum.</p>
+        <div class="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+          <div class="glass p-6 rounded-xl">
+            <h3 class="text-lg font-bold mb-2">Cross-Chain Staking</h3>
+            <p class="text-slate-400 text-sm">Otomatisasi pintar antar rantai blockchain tanpa hambatan.</p>
+          </div>
+          <div class="glass p-6 rounded-xl">
+            <h3 class="text-lg font-bold mb-2">AI Trading Engine</h3>
+            <p class="text-slate-400 text-sm">Analisis prediktif real-time untuk efisiensi eksekusi maksimum.</p>
+          </div>
         </div>
-      </div>
       </div>
     </section>
-    <!-- Dashboard Preview -->
-<section id="dashboard" class="px-4 sm:px-6 py-20 max-w-7xl mx-auto"><div class="glass reveal">
 
-  <div class="grid lg:grid-cols-2 gap-10 items-center">
-
-    <!-- Left -->
-    <div>
-
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-400/20 bg-violet-400/5 text-violet-400 text-xs font-medium tracking-wide mb-6 uppercase">
-        Smart Dashboard
-      </div>
-
-      <h2 class="text-4xl sm:text-5xl font-bold leading-tight mb-6">
-        Manage Everything <br/>
-        In One Place
-      </h2>
-
-      <p class="text-slate-400 leading-relaxed mb-8 max-w-xl">
-        Monitor assets, staking rewards, AI analytics, and blockchain activity from a unified decentralized dashboard.
-      </p>
-
-      <div class="space-y-4 mb-10">
-
-        <div class="flex items-center gap-4">
-          <div class="w-3 h-3 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">Real-Time Portfolio Analytics</p>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <div class="w-3 h-3 rounded-full bg-violet-400"></div>
-          <p class="text-slate-300">AI Trading Signals</p>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <div class="w-3 h-3 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">Cross-Chain Wallet Tracking</p>
-        </div>
-
-      </div>
-
-      <div class="flex flex-wrap gap-4">
-
-        <button onclick="connectWallet()" class="px-6 py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold hover:bg-cyan-300 transition-all active:scale-95">
-          Connect Wallet
-        </button>
-
-        <button class="px-6 py-3 rounded-xl glass hover:bg-white/5 transition-all">
-          Live Preview
-        </button>
-
-      </div>
-
-    </div>
-
-    <!-- Right Dashboard -->
-    <div class="glass rounded-[32px] p-6 sm:p-8 float">
-
-      <!-- Top -->
-      <div class="flex items-center justify-between mb-8">
-
-        <div>
-          <p class="text-slate-500 text-sm">Portfolio Balance</p>
-          <h2 class="text-4xl font-bold">$284,947</h2>
-        </div>
-
-        <div class="px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm border border-emerald-500/20">
-          +18.2%
-        </div>
-
-      </div>
-
-      <!-- Fake Chart -->
-      <div class="h-52 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-violet-500/10 border border-white/5 p-6 mb-6 relative overflow-hidden">
-
-        <div class="absolute bottom-0 left-0 w-full h-full flex items-end gap-2 px-6 pb-6">
-
-          <div class="w-full bg-cyan-400/70 rounded-t-xl h-[35%]"></div>
-          <div class="w-full bg-cyan-400/70 rounded-t-xl h-[55%]"></div>
-          <div class="w-full bg-violet-400/70 rounded-t-xl h-[45%]"></div>
-          <div class="w-full bg-cyan-400/70 rounded-t-xl h-[75%]"></div>
-          <div class="w-full bg-violet-400/70 rounded-t-xl h-[65%]"></div>
-          <div class="w-full bg-cyan-400/70 rounded-t-xl h-[90%]"></div>
-
-        </div>
-
-      </div>
-
-      <!-- Transactions -->
-      <div class="space-y-4">
-
-        <div class="flex items-center justify-between glass p-4 rounded-2xl">
-          <div>
-            <h3 class="font-semibold">ETH Staking</h3>
-            <p class="text-slate-500 text-sm">2 minutes ago</p>
-          </div>
-
-          <span class="text-emerald-400 font-bold">+$1,240</span>
-        </div>
-
-        <div class="flex items-center justify-between glass p-4 rounded-2xl">
-          <div>
-            <h3 class="font-semibold">AI Yield Farming</h3>
-            <p class="text-slate-500 text-sm">12 minutes ago</p>
-          </div>
-
-          <span class="text-cyan-400 font-bold">+18%</span>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</div>
-</section>
-
-<!-- Pricing / Staking -->
-<section id="pricing" class="px-4 sm:px-6 py-20 max-w-7xl mx-auto"><div class="glass reveal">
-
-  <div class="text-center mb-14">
-
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 text-xs font-medium tracking-wide uppercase mb-5">
-      Staking Plans
-    </div>
-
-    <h2 class="text-4xl sm:text-5xl font-bold mb-4">
-      Choose Your Plan
-    </h2>
-
-    <p class="text-slate-400 max-w-2xl mx-auto">
-      Access premium AI-powered DeFi infrastructure and maximize your staking rewards.
-    </p>
-
-  </div>
-
-  <div class="grid lg:grid-cols-3 gap-6">
-
-    <!-- Starter -->
-    <div class="glass rounded-3xl p-8 relative overflow-hidden">
-
-      <h3 class="text-2xl font-bold mb-2">Starter</h3>
-      <p class="text-slate-400 mb-6">Perfect for beginners entering Web3.</p>
-
-      <div class="mb-8">
-        <span class="text-5xl font-bold">100</span>
-        <span class="text-slate-400"> USDT</span>
-      </div>
-
-      <div class="space-y-4 mb-8">
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">8% APY Rewards</p>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">Basic Analytics</p>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">Cross-Chain Access</p>
-        </div>
-
-      </div>
-
-      <button onclick="openPayment('Starter Plan')" class="w-full py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold hover:bg-cyan-300 transition-all">
-        Stake Now
-      </button>
-
-    </div>
-
-    <!-- Pro -->
-    <div class="glass rounded-3xl p-8 border border-cyan-400/30 relative overflow-hidden">
-
-      <div class="absolute top-5 right-5 px-3 py-1 rounded-full bg-cyan-400 text-slate-950 text-xs font-bold">
-        POPULAR
-      </div>
-
-      <h3 class="text-2xl font-bold mb-2">Pro</h3>
-      <p class="text-slate-400 mb-6">Advanced staking with AI optimization.</p>
-
-      <div class="mb-8">
-        <span class="text-5xl font-bold">500</span>
-        <span class="text-slate-400"> USDT</span>
-      </div>
-
-      <div class="space-y-4 mb-8">
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-violet-400"></div>
-          <p class="text-slate-300">18% APY Rewards</p>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-violet-400"></div>
-          <p class="text-slate-300">AI Trading Signals</p>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-violet-400"></div>
-          <p class="text-slate-300">Priority Transactions</p>
-        </div>
-
-      </div>
-
-      <button onclick="openPayment('Pro Plan')" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-violet-400 text-slate-950 font-bold hover:opacity-90 transition-all">
-        Stake Now
-      </button>
-
-    </div>
-
-    <!-- Enterprise -->
-    <div class="glass rounded-3xl p-8 relative overflow-hidden">
-
-      <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
-      <p class="text-slate-400 mb-6">Institutional-grade staking ecosystem.</p>
-
-      <div class="mb-8">
-        <span class="text-5xl font-bold">1000</span>
-        <span class="text-slate-400"> USDT</span>
-      </div>
-
-      <div class="space-y-4 mb-8">
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">28% APY Rewards</p>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">Institutional AI Engine</p>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-          <p class="text-slate-300">Dedicated Infrastructure</p>
-        </div>
-
-      </div>
-
-      <button onclick="openPayment('Enterprise Plan')" class="w-full py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold hover:bg-cyan-300 transition-all">
-        Stake Now
-      </button>
-
-    </div>
-
-  </div>
-</div>
-</section>
-
-<!-- Roadmap -->
-<section id="roadmap" class="px-4 sm:px-6 py-20 max-w-7xl mx-auto">
-  <div class="glass reveal">
-
-  <div class="text-center mb-14">
-
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-400/20 bg-violet-400/5 text-violet-400 text-xs font-medium tracking-wide uppercase mb-5">
-      Roadmap
-    </div>
-
-    <h2 class="text-4xl sm:text-5xl font-bold mb-4">
-      Building The Future
-    </h2>
-
-    <p class="text-slate-400 max-w-2xl mx-auto">
-      Our mission is to create scalable AI-powered decentralized infrastructure for the next generation of finance.
-    </p>
-
-  </div>
-
-  <div class="grid lg:grid-cols-4 gap-6">
-
-    <!-- Phase 1 -->
-    <div class="glass rounded-3xl p-8 relative overflow-hidden">
-
-      <div class="absolute top-0 left-0 w-full h-1 bg-cyan-400"></div>
-
-      <p class="text-cyan-400 text-sm mb-3">Q1 2026</p>
-
-      <h3 class="text-2xl font-bold mb-4">
-        MVP Launch
-      </h3>
-
-      <p class="text-slate-400 leading-relaxed">
-        Launch initial AI-powered DeFi dashboard and staking ecosystem.
-      </p>
-
-    </div>
-
-    <!-- Phase 2 -->
-    <div class="glass rounded-3xl p-8 relative overflow-hidden">
-
-      <div class="absolute top-0 left-0 w-full h-1 bg-violet-400"></div>
-
-      <p class="text-violet-400 text-sm mb-3">Q2 2026</p>
-
-      <h3 class="text-2xl font-bold mb-4">
-        Cross-Chain Expansion
-      </h3>
-
-      <p class="text-slate-400 leading-relaxed">
-        Integrate Ethereum, Solana, Polygon, and Layer-2 infrastructure.
-      </p>
-
-    </div>
-
-    <!-- Phase 3 -->
-    <div class="glass rounded-3xl p-8 relative overflow-hidden">
-
-      <div class="absolute top-0 left-0 w-full h-1 bg-cyan-400"></div>
-
-      <p class="text-cyan-400 text-sm mb-3">Q3 2026</p>
-
-      <h3 class="text-2xl font-bold mb-4">
-        AI Trading Engine
-      </h3>
-
-      <p class="text-slate-400 leading-relaxed">
-        Deploy predictive analytics and automated AI portfolio optimization.
-      </p>
-
-    </div>
-
-    <!-- Phase 4 -->
-    <div class="glass rounded-3xl p-8 relative overflow-hidden">
-
-      <div class="absolute top-0 left-0 w-full h-1 bg-violet-400"></div>
-
-      <p class="text-violet-400 text-sm mb-3">Q4 2026</p>
-
-      <h3 class="text-2xl font-bold mb-4">
-        DAO Governance
-      </h3>
-
-      <p class="text-slate-400 leading-relaxed">
-        Launch decentralized governance system and community treasury.
-      </p>
-
-    </div>
-
-  </div>
-</div>
-</section>
-
-<div id="cursorGlow"></div>
   </main>
-  
-  <!-- Footer -->
-<footer class="px-4 sm:px-6 pt-10 pb-16 border-t border-white/5">
 
-  <div class="max-w-7xl mx-auto">
+  <!-- ── Cursor Glow ── -->
+  <div id="cursorGlow"></div>
 
-    <div class="grid lg:grid-cols-4 gap-10 mb-12">
-
-      <!-- Brand -->
-      <div>
-
-        <h2 class="text-3xl font-bold mb-4">
-          Nexora <span class="text-cyan-400">Labs</span>
-        </h2>
-
-        <p class="text-slate-400 leading-relaxed">
-          Powering the future of decentralized intelligence with scalable AI infrastructure.
-        </p>
-
-      </div>
-
-      <!-- Product -->
-      <div>
-
-        <h3 class="font-bold mb-5 text-white">
-          Product
-        </h3>
-
-        <div class="space-y-3 text-slate-400">
-
-          <a href="#" class="block hover:text-white transition-all">
-            Dashboard
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            Analytics
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            Staking
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            Wallet
-          </a>
-
+  <!-- ── Footer ── -->
+  <footer class="px-4 sm:px-6 pt-10 pb-16 border-t border-white/5">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <h2 class="text-3xl font-bold mb-4">Nexora <span class="text-cyan-400">Labs</span></h2>
+          <p class="text-slate-400 leading-relaxed">Powering the future of decentralized intelligence with scalable AI infrastructure.</p>
         </div>
-
-      </div>
-
-      <!-- Resources -->
-      <div>
-
-        <h3 class="font-bold mb-5 text-white">
-          Resources
-        </h3>
-
-        <div class="space-y-3 text-slate-400">
-
-          <a href="#" class="block hover:text-white transition-all">
-            Whitepaper
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            Documentation
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            GitHub
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            API
-          </a>
-
+        <div>
+          <h3 class="font-bold mb-5 text-white">Product</h3>
+          <div class="space-y-3 text-slate-400">
+            <a href="dashboard.html" class="block hover:text-white transition-all">Dashboard</a>
+            <a href="#"              class="block hover:text-white transition-all">Analytics</a>
+            <a href="pricing.html"  class="block hover:text-white transition-all">Staking</a>
+            <a href="#"              class="block hover:text-white transition-all">Wallet</a>
+          </div>
         </div>
-
-      </div>
-
-      <!-- Social -->
-      <div>
-
-        <h3 class="font-bold mb-5 text-white">
-          Community
-        </h3>
-
-        <div class="space-y-3 text-slate-400">
-
-          <a href="#" class="block hover:text-white transition-all">
-            Twitter
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            Discord
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            Telegram
-          </a>
-
-          <a href="#" class="block hover:text-white transition-all">
-            LinkedIn
-          </a>
-
+        <div>
+          <h3 class="font-bold mb-5 text-white">Resources</h3>
+          <div class="space-y-3 text-slate-400">
+            <a href="#" class="block hover:text-white transition-all">Whitepaper</a>
+            <a href="#" class="block hover:text-white transition-all">Documentation</a>
+            <a href="#" class="block hover:text-white transition-all">GitHub</a>
+            <a href="#" class="block hover:text-white transition-all">API</a>
+          </div>
         </div>
-
+        <div>
+          <h3 class="font-bold mb-5 text-white">Community</h3>
+          <div class="space-y-3 text-slate-400">
+            <a href="#" class="block hover:text-white transition-all">Twitter</a>
+            <a href="#" class="block hover:text-white transition-all">Discord</a>
+            <a href="#" class="block hover:text-white transition-all">Telegram</a>
+            <a href="#" class="block hover:text-white transition-all">LinkedIn</a>
+          </div>
+        </div>
       </div>
-
+      <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-slate-500 text-sm">© 2026 Nexora Labs. All rights reserved.</p>
+        <div class="flex items-center gap-6 text-sm text-slate-500">
+          <a href="#" class="hover:text-white transition-all">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition-all">Terms of Service</a>
+        </div>
+      </div>
     </div>
-
-    <!-- Bottom -->
-    <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-
-      <p class="text-slate-500 text-sm">
-        © 2026 Nexora Labs. All rights reserved.
-      </p>
-
-      <div class="flex items-center gap-6 text-sm text-slate-500">
-
-        <a href="#" class="hover:text-white transition-all">
-          Privacy Policy
-        </a>
-
-        <a href="#" class="hover:text-white transition-all">
-          Terms of Service
-        </a>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.1/dist/ethers.umd.min.js"></script>
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyA-sqr8i3bV5lFtHz3iSpAv_0b_XkI5MuE",
-  authDomain: "nexora-f8a28.firebaseapp.com",
-  projectId: "nexora-f8a28",
-  storageBucket: "nexora-f8a28.firebasestorage.app",
-  messagingSenderId: "190240060905",
-  appId: "1:190240060905:web:cc444584fe8cfbc7f44778",
-  measurementId: "G-HRF4KYM43Y"
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-window.db = db;
-window.collection = collection;
-window.addDoc = addDoc;
-
-</script>
-<script src="https://unpkg.com/scrollreveal"></script>
-  <script>
-    // 1. FUNGSI HANDLE WAITLIST (FORM SUBMISSION)
-    async function handleWaitlist(event) {
-  event.preventDefault();
-
-  const emailInput = document.getElementById('emailInput');
-  const toast = document.getElementById('toast');
-  const toastMsg = document.getElementById('toast-msg');
-
-  const email = emailInput.value.trim();
-
-  if(email !== "") {
-
-    try {
-
-      await addDoc(
-        collection(db, "waitlist"),
-        {
-          email: email,
-          createdAt: new Date()
-        }
-      );
-
-      toastMsg.innerText =
-        `Success! ${email} joined the waitlist.`;
-
-      emailInput.value = "";
-
-    } catch(error) {
-
-      toastMsg.innerText =
-        "Failed to join waitlist.";
-
-      console.error(error);
-    }
-
-    toast.classList.remove(
-      'translate-y-20',
-      'opacity-0'
-    );
-
-    toast.classList.add(
-      'translate-y-0',
-      'opacity-100'
-    );
-
-    setTimeout(() => {
-
-      toast.classList.remove(
-        'translate-y-0',
-        'opacity-100'
-      );
-
-      toast.classList.add(
-        'translate-y-20',
-        'opacity-0'
-      );
-
-    }, 4000);
-  }
-}
-
-    // 2. FUNGSI SMOOTH SCROLL KE FORM EMAIL KETIKA TOMBOL NAVBAR DIKLIK
-    function scrollToWaitlist() {
-      const form = document.getElementById('waitlistForm');
-      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      // Beri efek kilas/fokus otomatis ke kotak input email
-      setTimeout(() => {
-        document.getElementById('emailInput').focus();
-      }, 600);
-    }
-
-    // 3. FUNGSI ANIMASI ANGKA BERJALAN (COUNTER ANIMATION)
-    function startCounters() {
-      const counters = document.querySelectorAll('.counter');
-      
-      counters.forEach(counter => {
-        counter.innerText = '0';
-        const target = +counter.getAttribute('data-target');
-        const countTo = target;
-        
-        // Mengatur kecepatan durasi penambahan angka
-        const duration = 2000; // 2 detik keseluruhan animasi
-        const stepTime = Math.abs(Math.floor(duration / countTo));
-        
-        let currentCount = 0;
-        const timer = setInterval(() => {
-          currentCount += 1;
-          counter.innerText = currentCount;
-          
-          if (currentCount >= target) {
-            counter.innerText = target; // Pastikan berakhir di angka target pas
-            clearInterval(timer);
-          }
-        }, stepTime);
-      });
-    }
-
-    // Jalankan animasi angka otomatis begitu halaman web selesai dimuat browser
-    document.addEventListener("DOMContentLoaded", () => {
-      startCounters();
-    });
-    
-    async function connectWallet() {
-
-  const toast = document.getElementById('toast');
-  const toastMsg = document.getElementById('toast-msg');
-
-  if (!window.ethereum) {
-
-    toastMsg.innerText =
-      "MetaMask not detected.";
-
-  } else {
-
-    try {
-
-      const provider =
-        new ethers.BrowserProvider(window.ethereum);
-
-      const accounts =
-        await provider.send(
-          "eth_requestAccounts",
-          []
-        );
-
-      const wallet =
-        accounts[0];
-
-      const shortWallet =
-        wallet.slice(0,6)
-        + "..."
-        + wallet.slice(-4);
-
-      toastMsg.innerText =
-        `Connected: ${shortWallet}`;
-
-      // Optional:
-      // ganti text button
-
-      document.querySelectorAll(
-        '[onclick="connectWallet()"]'
-      ).forEach(btn => {
-
-        btn.innerText = shortWallet;
-
-      });
-
-    } catch(error) {
-
-      toastMsg.innerText =
-        "Wallet connection failed.";
-
-      console.error(error);
-    }
-  }
-
-  toast.classList.remove(
-    'translate-y-20',
-    'opacity-0'
-  );
-
-  toast.classList.add(
-    'translate-y-0',
-    'opacity-100'
-  );
-
-  setTimeout(() => {
-
-    toast.classList.remove(
-      'translate-y-0',
-      'opacity-100'
-    );
-
-    toast.classList.add(
-      'translate-y-20',
-      'opacity-0'
-    );
-
-  }, 4000);
-}
-
-function openPayment(plan) {
-  const toast = document.getElementById('toast');
-  const toastMsg = document.getElementById('toast-msg');
-
-  toastMsg.innerText = `${plan} payment gateway coming soon.`;
-
-  toast.classList.remove('translate-y-20', 'opacity-0');
-  toast.classList.add('translate-y-0', 'opacity-100');
-
-  setTimeout(() => {
-    toast.classList.remove('translate-y-0', 'opacity-100');
-    toast.classList.add('translate-y-20', 'opacity-0');
-  }, 4000);
-}
-ScrollReveal().reveal('.reveal', {
-  distance: '40px',
-  duration: 1200,
-  easing: 'ease',
-  origin: 'bottom',
-  interval: 120,
-  reset: false
-});
-
-document.addEventListener('mousemove', (e) => {
-  const glow = document.getElementById('cursorGlow');
-
-  glow.style.left = e.clientX + 'px';
-  glow.style.top = e.clientY + 'px';
-});
-
-window.addEventListener('load', () => {
-
-  const loader =
-    document.getElementById('loader');
-
-  const loaderBar =
-    document.getElementById('loaderBar');
-
-  let width = 0;
-
-  const interval = setInterval(() => {
-
-    width += 10;
-
-    loaderBar.style.width =
-      width + "%";
-
-    if(width >= 100){
-
-      clearInterval(interval);
-
-      setTimeout(() => {
-
-        loader.style.opacity = "0";
-        loader.style.pointerEvents = "none";
-
-      }, 400);
-
-    }
-
-  }, 120);
-});
-  </script>
-
+  </footer>
+
+  <!-- ── Scripts ── -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.1/dist/ethers.umd.min.js"></script>
+  <script type="module" src="firebase.js"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="script.js"></script>
 
 </body>
 </html>
